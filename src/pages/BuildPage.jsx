@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import builds from '../data/builds.js'
 import Grimoire from '../components/Grimoire.jsx'
 import Revelation from '../components/Revelation.jsx'
+import WikiTooltip from '../components/WikiTooltip.jsx'
 import { accentDe, variableAccent } from '../lib/accents.js'
 
 const ORDRE_STATS = ['FOR', 'DEX', 'CON', 'INT', 'SAG', 'CHA']
@@ -119,7 +120,9 @@ function CarteStats({ build, accent }) {
         ].map(([libelle, valeur]) => (
           <div key={libelle} className="sm:flex sm:gap-6">
             <dt className="glyphe sm:w-44 sm:shrink-0 sm:pt-0.5">{libelle}</dt>
-            <dd className="mt-1 text-sm leading-relaxed text-gray-300 sm:mt-0">{valeur}</dd>
+            <dd className="mt-1 text-sm leading-relaxed text-gray-300 sm:mt-0">
+              <WikiTooltip text={valeur} />
+            </dd>
           </div>
         ))}
       </dl>
@@ -165,7 +168,7 @@ function CarteProgression({ build, accent }) {
                   key={acquis}
                   className="border border-white/10 bg-white/[0.04] px-2 py-1 font-rune text-[0.62rem] leading-snug text-gray-300"
                 >
-                  {acquis}
+                  <WikiTooltip text={acquis} />
                 </li>
               ))}
             </ul>
@@ -208,7 +211,9 @@ function CarteForces({ build }) {
                   <span aria-hidden="true" className={`shrink-0 font-rune ${colonne.couleurPuce}`}>
                     {colonne.puce}
                   </span>
-                  <span>{item}</span>
+                  <span>
+                    <WikiTooltip text={item} />
+                  </span>
                 </li>
               ))}
             </ul>
@@ -494,7 +499,9 @@ export default function BuildPage() {
                 {build.aptitudesCles.map((aptitude) => (
                   <li key={aptitude} className="flex gap-3 text-sm leading-relaxed text-gray-300">
                     <span aria-hidden="true" className={`mt-[0.45rem] h-1.5 w-1.5 shrink-0 rotate-45 ${accent.barre}`} />
-                    <span>{aptitude}</span>
+                    <span>
+                      <WikiTooltip text={aptitude} />
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -508,7 +515,7 @@ export default function BuildPage() {
                       key={sort}
                       className={`border ${accent.bordDoux} ${accent.fond} px-2.5 py-1 font-rune text-[0.65rem] ${accent.texte}`}
                     >
-                      {sort}
+                      <WikiTooltip text={sort} />
                     </li>
                   ))}
                 </ul>

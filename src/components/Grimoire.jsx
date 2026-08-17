@@ -6,7 +6,12 @@
  * quatre formes réellement présentes dans les fiches — tableaux, listes
  * (à puces, numérotées, cases à cocher), gras, et paragraphes de callout
  * introduits par une émoji.
+ *
+ * Chaque fragment de texte traverse `inline()`, qui pose le gras puis délègue à
+ * WikiTooltip le repérage des termes du wiki Solasta.
  */
+
+import { lierTermesWiki } from './WikiTooltip.jsx'
 
 // ------------------------------------------------------------------ Callouts
 
@@ -28,25 +33,36 @@ function callout(texte) {
 
 // -------------------------------------------------------------------- Inline
 
-/** Transforme `**gras**` en <strong>, laisse le reste tel quel. */
-function inline(texte) {
+/**
+ * Transforme `**gras**` en <strong> et lie les termes du wiki.
+ *
+ * `vus` circule d'un appel à l'autre pour qu'un même terme ne soit lié qu'une
+ * fois par bloc — sans quoi une liste répétant « Rage » vire au sapin de Noël.
+ * `simple` bascule sur l'infobulle native, dans les conteneurs qui défilent.
+ */
+function inline(texte, { vus = new Set(), simple = false } = {}) {
   const morceaux = []
   let curseur = 0
 
   for (const trouve of texte.matchAll(/\*\*(.+?)\*\*/g)) {
-    if (trouve.index > curseur) morceaux.push(texte.slice(curseur, trouve.index))
-    morceaux.push(
-      <strong key={trouve.index} className="font-semibold text-or-100">
-        {trouve[1]}
-      </strong>,
-    )
+    if (trouve.index > curseur) {
+      morceaux.push({ gras: false, texte: texte.slice(curseur, trouve.index), pos: curseur })
+    }
+    morceaux.push({ gras: true, texte: trouve[1], pos: trouve.index })
     curseur = trouve.index + trouve[0].length
   }
-  if (curseur < texte.length) morceaux.push(texte.slice(curseur))
+  if (curseur < texte.length) morceaux.push({ gras: false, texte: texte.slice(curseur), pos: curseur })
 
-  return morceaux.map((morceau, i) =>
-    typeof morceau === 'string' ? <span key={`t${i}`}>{morceau}</span> : morceau,
-  )
+  return morceaux.map(({ gras, texte: fragment, pos }) => {
+    const contenu = lierTermesWiki(fragment, { prefixe: `f${pos}`, vus, simple })
+    return gras ? (
+      <strong key={`g${pos}`} className="font-semibold text-or-100">
+        {contenu}
+      </strong>
+    ) : (
+      <span key={`t${pos}`}>{contenu}</span>
+    )
+  })
 }
 
 // -------------------------------------------------------------------- Parser
@@ -140,6 +156,10 @@ function decouper(markdown) {
 // ------------------------------------------------------------------- Rendus
 
 function Tableau({ bloc }) {
+  // Le tableau défile horizontalement : infobulles natives, et un seul lien
+  // par terme pour l'ensemble de la grille.
+  const vus = new Set()
+
   return (
     <div className="-mx-1 overflow-x-auto px-1">
       <table className="w-full min-w-[26rem] border-collapse text-left text-sm">
@@ -147,7 +167,7 @@ function Tableau({ bloc }) {
           <tr className="border-b border-or-700/40 bg-encre">
             {bloc.entete.map((cellule, i) => (
               <th key={i} className="glyphe px-3 py-2.5 font-normal">
-                {inline(cellule)}
+                {inline(cellule, { vus, simple: true })}
               </th>
             ))}
           </tr>
@@ -165,7 +185,7 @@ function Tableau({ bloc }) {
                     j === 0 ? 'font-rune text-[0.72rem] uppercase tracking-[0.08em] text-or-300' : 'text-gray-300'
                   }`}
                 >
-                  {inline(cellule)}
+                  {inline(cellule, { vus, simple: true })}
                 </td>
               ))}
             </tr>
@@ -177,12 +197,14 @@ function Tableau({ bloc }) {
 }
 
 function Puces({ bloc, accent }) {
+  const vus = new Set()
+
   return (
     <ul className="space-y-2">
       {bloc.items.map((item, i) => (
         <li key={i} className="flex gap-3 leading-relaxed text-gray-300">
           <span aria-hidden="true" className={`mt-[0.45rem] h-1.5 w-1.5 shrink-0 rotate-45 ${accent.barre}`} />
-          <span>{inline(item)}</span>
+          <span>{inline(item, { vus })}</span>
         </li>
       ))}
     </ul>
@@ -190,6 +212,8 @@ function Puces({ bloc, accent }) {
 }
 
 function Numeros({ bloc, accent }) {
+  const vus = new Set()
+
   return (
     <ol className="space-y-2.5">
       {bloc.items.map((item, i) => (
@@ -200,7 +224,7 @@ function Numeros({ bloc, accent }) {
           >
             {i + 1}
           </span>
-          <span>{inline(item)}</span>
+          <span>{inline(item, { vus })}</span>
         </li>
       ))}
     </ol>
@@ -208,6 +232,8 @@ function Numeros({ bloc, accent }) {
 }
 
 function Taches({ bloc, accent }) {
+  const vus = new Set()
+
   return (
     <ul className="space-y-2">
       {bloc.items.map((item, i) => (
@@ -216,7 +242,7 @@ function Taches({ bloc, accent }) {
             aria-hidden="true"
             className={`mt-1 h-3.5 w-3.5 shrink-0 border ${accent.bord} ${item.coche ? accent.fond : 'bg-transparent'}`}
           />
-          <span>{inline(item.texte)}</span>
+          <span>{inline(item.texte, { vus })}</span>
         </li>
       ))}
     </ul>
@@ -224,10 +250,12 @@ function Taches({ bloc, accent }) {
 }
 
 function LignesTexte({ texte }) {
+  const vus = new Set()
+
   return texte.map((ligne, i) => (
     <span key={i}>
       {i > 0 && <br />}
-      {inline(ligne)}
+      {inline(ligne, { vus })}
     </span>
   ))
 }
