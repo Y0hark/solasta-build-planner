@@ -138,7 +138,7 @@ export function lierTermesWiki(texte, { prefixe = 'w', vus = new Set(), simple =
 }
 
 /** Version composant, pour un texte isolé hors du Grimoire. */
-export default function WikiTooltip({ text }) {
+export default function WikiTooltip({ text, simple = false }) {
   if (!text) return null
-  return <>{lierTermesWiki(text)}</>
+  return <>{lierTermesWiki(text, { simple })}</>
 }

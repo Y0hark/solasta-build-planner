@@ -168,7 +168,8 @@ function CarteProgression({ build, accent }) {
                   key={acquis}
                   className="border border-voile/[0.18] bg-voile/[0.08] px-2 py-1 font-rune text-[0.62rem] leading-snug text-gray-300"
                 >
-                  <WikiTooltip text={acquis} />
+                  {/* La frise défile en largeur : le calque serait rogné. */}
+                  <WikiTooltip text={acquis} simple />
                 </li>
               ))}
             </ul>
