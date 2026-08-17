@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------
+   Solasta Build Planner — feuille de style « grimoire »
+   Fond d'encre, dorures gravées, texture de parchemin brûlé.
+   ------------------------------------------------------------------ */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-encre font-grimoire text-gray-200 antialiased;
+    /* Deux halos de bougie + le noir d'encre en dessous */
+    background-image:
+      radial-gradient(60rem 40rem at 12% -10%, rgba(201, 162, 39, 0.1), transparent 60%),
+      radial-gradient(50rem 40rem at 100% 0%, rgba(139, 58, 31, 0.12), transparent 60%),
+      radial-gradient(70rem 50rem at 50% 120%, rgba(88, 28, 135, 0.14), transparent 65%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* Grain de parchemin appliqué sur toute la page, sans intercepter les clics */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.28;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    @apply bg-or-500/35 text-or-100;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-or-300 ring-offset-2 ring-offset-encre;
+  }
+
+  /* Une reliure fine plutôt que la barre système */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-encre;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full border-2 border-encre bg-or-700/60;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-or-500/70;
+  }
+}
+
+@layer components {
+  /* Titre gravé : la dorure prend la lumière du haut */
+  .grave {
+    @apply font-display uppercase;
+    background-image: linear-gradient(180deg, #f6e7b4 0%, #e8c66a 42%, #a37c1c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+  }
+
+  /* Filet doré séparateur, atténué aux extrémités */
+  .filet {
+    height: 1px;
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(201, 162, 39, 0.55) 20%,
+      rgba(246, 231, 180, 0.85) 50%,
+      rgba(201, 162, 39, 0.55) 80%,
+      transparent
+    );
+  }
+
+  /* Surface de carte : ardoise patinée + liseré d'or discret */
+  .plaque {
+    @apply relative rounded-sm border border-or-700/30 bg-slate-800/70 backdrop-blur-sm;
+    background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.04), transparent 45%);
+    box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.95);
+  }
+
+  /* Équerres dorées aux angles — se déploient au survol de la carte */
+  .equerres::before,
+  .equerres::after {
+    content: '';
+    position: absolute;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-color: rgba(232, 198, 106, 0.75);
+    transition: width 0.35s ease, height 0.35s ease, border-color 0.35s ease;
+    pointer-events: none;
+  }
+  .equerres::before {
+    top: 0;
+    left: 0;
+    border-top-width: 2px;
+    border-left-width: 2px;
+  }
+  .equerres::after {
+    bottom: 0;
+    right: 0;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+  }
+  .groupe-plaque:hover .equerres::before,
+  .groupe-plaque:hover .equerres::after,
+  .groupe-plaque:focus-within .equerres::before,
+  .groupe-plaque:focus-within .equerres::after {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-color: #f6e7b4;
+  }
+
+  /* Petite étiquette de données, façon note de marge */
+  .glyphe {
+    @apply font-rune text-[0.65rem] uppercase tracking-[0.22em] text-or-500/80;
+  }
+
+  /* ----------------------------------------------------------------
+     Lueur d'accent — les éléments concernés portent --accent (cf.
+     variableAccent() dans src/lib/accents.js). Sans la variable, la
+     valeur de repli garde l'or du grimoire.
+     ---------------------------------------------------------------- */
+  .accent-vif {
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.45s ease,
+      border-color 0.35s ease;
+  }
+  .groupe-plaque:hover .accent-vif,
+  .groupe-plaque:focus-within .accent-vif {
+    transform: scale(1.03);
+    border-color: rgb(var(--accent, 232 198 106) / 0.6);
+    box-shadow:
+      0 0 0 1px rgb(var(--accent, 232 198 106) / 0.35),
+      0 0 34px -6px rgb(var(--accent, 232 198 106) / 0.4),
+      0 26px 55px -26px rgba(0, 0, 0, 0.95);
+  }
+  /* L'icône du sceau bascule légèrement quand la carte s'anime */
+  .sceau-carte {
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .groupe-plaque:hover .sceau-carte,
+  .groupe-plaque:focus-within .sceau-carte {
+    transform: rotate(8deg) scale(1.12);
+  }
+
+  /* Badge « Broken » : le sceau respire et pulse */
+  .sceau-brise {
+    animation: pulsationSceau 2.6s ease-in-out infinite;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Keyframes maison (hors config Tailwind : elles dépendent de --accent)
+   ------------------------------------------------------------------ */
+
+@keyframes lueurTitre {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(232, 198, 106, 0.15));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(232, 198, 106, 0.45));
+  }
+}
+
+@keyframes pulsationSceau {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(var(--accent, 232 198 106) / 0.35);
+  }
+  55% {
+    box-shadow: 0 0 12px 3px rgb(var(--accent, 232 198 106) / 0.12);
+  }
+}
+
+@keyframes entreePage {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  /* Le titre du frontispice respire dans sa lueur ambrée */
+  .lueur-titre {
+    animation: lueurTitre 5s ease-in-out infinite;
+  }
+
+  /* Transition de route : fondu + glissement de 15px */
+  .entree-page {
+    animation: entreePage 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* --------------------------------------------------------------
+     Révélation au scroll (un seul Intersection Observer, cf.
+     src/hooks/useRevelation.js). L'état de départ n'est appliqué
+     que tant que l'élément n'est pas révélé.
+     -------------------------------------------------------------- */
+  .revele {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.65s ease,
+      transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .revele-gauche {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .revele-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer utilities {
+  .tracking-sceau {
+    letter-spacing: 0.28em;
+  }
+  /* Retards d'entrée pour orchestrer l'ouverture du grimoire */
+  .retard-1 {
+    animation-delay: 120ms;
+  }
+  .retard-2 {
+    animation-delay: 240ms;
+  }
+  .retard-3 {
+    animation-delay: 360ms;
+  }
+  .retard-4 {
+    animation-delay: 480ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
