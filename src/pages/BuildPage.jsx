@@ -78,7 +78,7 @@ function BarreStat({ cle, valeur, accent }) {
         <span className="glyphe">{cle}</span>
         <span className="font-rune text-sm text-gray-100">{valeur}</span>
       </div>
-      <div className="relative mt-2 h-1.5 w-full bg-white/[0.06]">
+      <div className="relative mt-2 h-1.5 w-full bg-voile/[0.06]">
         {/* Le fantôme couvre la borne haute de la fourchette, la barre pleine la borne basse */}
         <span aria-hidden="true" className={`absolute inset-y-0 left-0 ${accent.barreFantome}`} style={{ width: pct(max) }} />
         <span aria-hidden="true" className={`absolute inset-y-0 left-0 ${accent.barre}`} style={{ width: pct(min) }} />
@@ -166,7 +166,7 @@ function CarteProgression({ build, accent }) {
               {etape.acquis.map((acquis) => (
                 <li
                   key={acquis}
-                  className="border border-white/10 bg-white/[0.04] px-2 py-1 font-rune text-[0.62rem] leading-snug text-gray-300"
+                  className="border border-voile/[0.18] bg-voile/[0.08] px-2 py-1 font-rune text-[0.62rem] leading-snug text-gray-300"
                 >
                   <WikiTooltip text={acquis} />
                 </li>
@@ -243,7 +243,7 @@ function CarteEquipe({ build, accent }) {
                 className={`flex flex-1 items-center gap-4 border p-4 transition-colors md:flex-col md:items-start ${
                   courant
                     ? `${accent.bord} ${accent.fond}`
-                    : 'border-white/10 bg-white/[0.02] hover:border-or-500/40 hover:bg-or-500/[0.06]'
+                    : 'border-voile/[0.18] bg-voile/[0.04] hover:border-or-500/40 hover:bg-or-500/[0.06]'
                 }`}
               >
                 <span aria-hidden="true" className="text-3xl">
@@ -310,7 +310,7 @@ function Sommaire({ flux, actif, accent, onNaviguer, avecTitre = true }) {
             <a
               href={`#${lien.id}`}
               onClick={onNaviguer}
-              className="inline-block rounded-full border border-white/10 px-3 py-1 font-rune text-[0.6rem] uppercase tracking-[0.14em] text-gray-400 transition-colors hover:border-or-500/50 hover:text-or-100"
+              className="inline-block rounded-full border border-voile/[0.18] px-3 py-1 font-rune text-[0.6rem] uppercase tracking-[0.14em] text-gray-400 transition-colors hover:border-or-500/50 hover:text-or-100"
             >
               {lien.libelle}
             </a>

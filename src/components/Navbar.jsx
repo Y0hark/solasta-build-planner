@@ -1,4 +1,5 @@
 import { Link, NavLink } from 'react-router-dom'
+import SelecteurTheme from './SelecteurTheme.jsx'
 
 const lienBase =
   'relative whitespace-nowrap py-1 text-[0.65rem] uppercase tracking-[0.18em] text-gray-300 transition-colors hover:text-or-100 sm:text-xs sm:tracking-[0.24em] ' +
@@ -27,28 +28,33 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <ul className="flex items-center gap-5 sm:gap-8">
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `${lienBase} ${isActive ? 'text-or-100 after:scale-x-100' : ''}`
-              }
-            >
-              Accueil
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/compare"
-              className={({ isActive }) =>
-                `${lienBase} ${isActive ? 'text-or-100 after:scale-x-100' : ''}`
-              }
-            >
-              Comparer
-            </NavLink>
-          </li>
-        </ul>
+        <div className="flex items-center gap-4 sm:gap-6">
+          <ul className="flex items-center gap-5 sm:gap-8">
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `${lienBase} ${isActive ? 'text-or-100 after:scale-x-100' : ''}`
+                }
+              >
+                Accueil
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/compare"
+                className={({ isActive }) =>
+                  `${lienBase} ${isActive ? 'text-or-100 after:scale-x-100' : ''}`
+                }
+              >
+                Comparer
+              </NavLink>
+            </li>
+          </ul>
+
+          {/* Bascule de thème : 5 palettes, mémorisée en localStorage */}
+          <SelecteurTheme />
+        </div>
       </nav>
     </header>
   )

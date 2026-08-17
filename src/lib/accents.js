@@ -2,8 +2,10 @@
 // Tailwind ne détecte pas les noms de classes construits à la volée.
 export const ACCENTS = {
   red: {
-    // Canaux RGB bruts : alimentent la variable CSS --accent (lueurs, bordures animées)
-    rgb: '248 113 113',
+    // Alimente la variable CSS --accent (lueurs, bordures animées). On pointe
+    // vers la variable de thème plutôt que des canaux figés : l'accent suit
+    // donc la palette active (cf. les blocs [data-theme] de src/index.css).
+    rgb: 'var(--c-red-400)',
     halo: 'from-red-500/25',
     trait: 'bg-red-400/70',
     puce: 'border-red-400/40 text-red-200/90',
@@ -17,7 +19,7 @@ export const ACCENTS = {
     barreFantome: 'bg-red-400/25',
   },
   yellow: {
-    rgb: '252 211 77',
+    rgb: 'var(--c-amber-300)',
     halo: 'from-amber-400/25',
     trait: 'bg-amber-300/70',
     puce: 'border-amber-300/40 text-amber-100/90',
@@ -31,7 +33,7 @@ export const ACCENTS = {
     barreFantome: 'bg-amber-300/25',
   },
   purple: {
-    rgb: '192 132 252',
+    rgb: 'var(--c-purple-400)',
     halo: 'from-purple-500/25',
     trait: 'bg-purple-400/70',
     puce: 'border-purple-400/40 text-purple-200/90',

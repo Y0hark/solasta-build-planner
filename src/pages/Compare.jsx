@@ -114,7 +114,7 @@ function TableauComparatif() {
             {famille.lignes.map((ligne) => (
               <tr
                 key={ligne.libelle}
-                className="border-b border-white/5 bg-slate-800 transition-colors even:bg-slate-750 hover:bg-slate-700"
+                className="border-b border-voile/[0.10] bg-slate-800 transition-colors even:bg-slate-750 hover:bg-slate-700"
               >
                 <th
                   scope="row"

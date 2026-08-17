@@ -176,7 +176,7 @@ function Tableau({ bloc }) {
           {bloc.lignes.map((rangee, i) => (
             <tr
               key={i}
-              className="border-b border-white/5 transition-colors last:border-0 odd:bg-slate-800/70 even:bg-slate-750/50 hover:bg-slate-700/70"
+              className="border-b border-voile/[0.10] transition-colors last:border-0 odd:bg-slate-800/70 even:bg-slate-750/50 hover:bg-slate-700/70"
             >
               {rangee.map((cellule, j) => (
                 <td
