@@ -408,7 +408,7 @@ export default function BuildPage() {
           className={`pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-gradient-to-br ${accent.halo} to-transparent blur-3xl`}
         />
 
-        <div className="relative flex flex-wrap items-start justify-between gap-6">
+        <div className="relative flex flex-wrap items-start gap-6">
           <div className="flex min-w-0 items-start gap-5">
             <span aria-hidden="true" className="text-5xl leading-none sm:text-6xl">
               {build.icone}
@@ -420,13 +420,6 @@ export default function BuildPage() {
               </p>
             </div>
           </div>
-
-          <p className="text-right">
-            <span className="block font-rune text-4xl font-semibold leading-none text-or-300 sm:text-5xl">
-              {build.note.toFixed(1)}
-            </span>
-            <span className="glyphe mt-1 block">Note / 10</span>
-          </p>
         </div>
 
         <ul className="relative mt-7 flex flex-wrap gap-2">

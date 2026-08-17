@@ -1,7 +1,5 @@
 import { Link, NavLink } from 'react-router-dom'
 
-const DEPOT = 'https://github.com/Y0hark/solasta-build-planner'
-
 const lienBase =
   'relative whitespace-nowrap py-1 text-[0.65rem] uppercase tracking-[0.18em] text-gray-300 transition-colors hover:text-or-100 sm:text-xs sm:tracking-[0.24em] ' +
   'after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 ' +
@@ -49,11 +47,6 @@ export default function Navbar() {
             >
               Comparer
             </NavLink>
-          </li>
-          <li>
-            <a href={DEPOT} target="_blank" rel="noreferrer" className={lienBase}>
-              GitHub
-            </a>
           </li>
         </ul>
       </nav>

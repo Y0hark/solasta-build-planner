@@ -18,7 +18,6 @@ const FAMILLES = [
       { libelle: 'Rôle', valeur: (b) => b.role },
       { libelle: 'Puissance', valeur: (b) => b.niveauPuissance, sceau: true },
       { libelle: 'Difficulté', valeur: (b) => b.difficulte },
-      { libelle: 'Note', valeur: (b) => b.note.toFixed(1), chiffre: true },
     ],
   },
   {
@@ -339,7 +338,6 @@ export default function Compare() {
                     <span className={`font-display text-[0.72rem] uppercase tracking-[0.1em] ${accent.texte}`}>
                       {build.nom}
                     </span>
-                    <span className="glyphe">{build.note.toFixed(1)} / 10</span>
                   </figcaption>
                   <blockquote className="mt-3 font-grimoire text-base italic leading-relaxed text-gray-200">
                     {poste.verdict}

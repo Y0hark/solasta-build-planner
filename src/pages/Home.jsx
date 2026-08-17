@@ -2,8 +2,7 @@ import { Link } from 'react-router-dom'
 import builds from '../data/builds.js'
 import BuildCard from '../components/BuildCard.jsx'
 import Revelation from '../components/Revelation.jsx'
-import { accentDe, variableAccent } from '../lib/accents.js'
-import { FORMATION, SYNERGIES } from '../lib/formation.js'
+import { SYNERGIES } from '../lib/formation.js'
 
 const RUNES = '✦ FOR ✦ DEX ✦ CON ✦ INT ✦ SAG ✦ CHA '
 
@@ -116,67 +115,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* -------------------------------------------------------- L'équipe */}
-      <section id="equipe" className="mx-auto max-w-6xl scroll-mt-24 px-5 pb-28">
-        <header className="mb-10">
-          <h2 className="grave text-xl tracking-[0.14em]">L'équipe</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">
-            Trois fiches, trois lignes. La formation tient parce que chacune couvre exactement ce que
-            les deux autres ne savent pas faire.
-          </p>
-        </header>
-
-        {/* Front → mid → back, avec les connecteurs entre les rôles */}
-        <ol className="flex flex-col items-stretch lg:flex-row">
-          {FORMATION.map((poste, index) => {
-            const build = builds.find((b) => b.id === poste.id)
-            if (!build) return null
-            const accent = accentDe(build)
-
-            return (
-              <li key={poste.id} className="contents">
-                {index > 0 && (
-                  <span
-                    aria-hidden="true"
-                    className="flex items-center justify-center py-3 font-rune text-lg text-or-500/70 lg:px-4 lg:py-0"
-                  >
-                    <span className="lg:hidden">↓</span>
-                    <span className="hidden lg:inline">→</span>
-                  </span>
-                )}
-
-                <Revelation
-                  delai={index * 120}
-                  className="group groupe-plaque flex-1"
-                  style={variableAccent(build)}
-                >
-                  <Link
-                    to={`/build/${build.id}`}
-                    className={`plaque accent-vif flex h-full flex-col border-l-4 ${accent.bord} p-5`}
-                  >
-                    <p className="glyphe">{poste.ligne}</p>
-                    <p className="mt-3 flex items-center gap-3">
-                      <span aria-hidden="true" className="sceau-carte text-3xl">
-                        {build.icone}
-                      </span>
-                      <span
-                        className={`font-display text-[0.72rem] uppercase leading-snug tracking-[0.1em] ${accent.texte}`}
-                      >
-                        {build.nom}
-                      </span>
-                    </p>
-                    <p className="mt-4 font-rune text-[0.62rem] uppercase tracking-[0.14em] text-gray-500">
-                      {poste.place}
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-gray-300">{poste.mission}</p>
-                  </Link>
-                </Revelation>
-              </li>
-            )
-          })}
-        </ol>
-
-        <Revelation className="plaque mt-8 p-6 sm:p-7">
+      {/* ------------------------------------------------------ Les synergies */}
+      <section id="synergies" className="mx-auto max-w-6xl scroll-mt-24 px-5 pb-28">
+        <Revelation className="plaque p-6 sm:p-7">
           <p className="glyphe">Les synergies</p>
           <ul className="mt-5 grid gap-3 sm:grid-cols-2">
             {SYNERGIES.map((synergie) => (

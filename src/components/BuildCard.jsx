@@ -22,15 +22,9 @@ export default function BuildCard({ build, index = 0 }) {
           className={`pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br ${accent.halo} to-transparent opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100`}
         />
 
-        <header className="relative flex items-start justify-between gap-4">
+        <header className="relative flex items-start gap-4">
           <span aria-hidden="true" className="sceau-carte text-4xl">
             {build.icone}
-          </span>
-          <span className="text-right">
-            <span className="block font-rune text-2xl font-semibold leading-none text-or-300">
-              {build.note.toFixed(1)}
-            </span>
-            <span className="glyphe">Note / 10</span>
           </span>
         </header>
 
