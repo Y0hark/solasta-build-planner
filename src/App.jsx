@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
+import BanniereAbandon from './components/BanniereAbandon.jsx'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import RetourEnHaut from './components/RetourEnHaut.jsx'
@@ -32,6 +33,7 @@ export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
       <RestaurerLeScroll />
+      <BanniereAbandon />
       <Navbar />
       <main key={pathname} className="entree-page flex-1">
         <Routes>
